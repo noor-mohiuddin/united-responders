@@ -1,10 +1,31 @@
 /**
  * Script to generate the maps
  */
+
+/*
+ * Classes
+ */
+
 function Ambulance(code, location) {
 	this.code = code;
 	this.location = location;
 }
+
+function Emergency(location){
+	this.location = location;
+}
+
+function AmbulanceRoute(ambulance, ambulanceLocationText, routeDistance, routeDuration){
+	this.ambulanceCode = ambulance.code;
+	this.ambulanceLocation = ambulance.location;
+	this.ambulanceLocationText = ambulanceLocationText;
+	this.routeDistance = routeDistance;
+	this.routeDuration = routeDuration;
+}
+
+/*
+ * Methods
+ */
 
 function getLatLng(lat, lng){
 	return new google.maps.LatLng(lat, lng);
@@ -20,8 +41,75 @@ function addAmbulanceMarkers(ambulances, map){
 	});
 }
 
+function populateAmbulanceRoutes (emergency, ambulances) {
+	var service = new google.maps.DistanceMatrixService();
+	
+	service.getDistanceMatrix({
+		origins : getLatLngArray(ambulances),
+		destinations : [emergency.location],
+		travelMode : google.maps.TravelMode.DRIVING,
+		unitSystem : google.maps.UnitSystem.METRIC,
+		durationInTraffic : true,
+		avoidHighways : false,
+		avoidTolls : false
+	}, callback);
+
+	function callback(response, status) {
+		if (status == google.maps.DistanceMatrixStatus.OK) {
+			var origins = response.originAddresses;
+			var destinations = response.destinationAddresses;
+			var ambulanceRoutes = [];
+			
+			for (var i = 0; i < origins.length; i++) {
+				var results = response.rows[i].elements;
+				for (var j = 0; j < results.length; j++) {
+					var element = results[j];
+					ambulanceRoutes.push(new AmbulanceRoute(
+												ambulances[i],
+												response.originAddresses[i],
+												element.distance,
+												element.duration
+										));
+				}
+			}
+			
+			populateAmbulanceTable (ambulanceRoutes.sort(compareRoutes));
+		}
+	}
+}
+
+function compareRoutes(amb1, amb2){
+	if (amb1.routeDuration.value < amb2.routeDuration.value)
+	     return -1;
+	  if (amb1.routeDuration.value > amb2.routeDuration.value)
+	    return 1;
+	  return 0;
+}
+
+function populateAmbulanceTable (ambulanceRoutes){
+	var ambulanceTable = document.getElementById("ambulanceList");
+	for (var i = 0; i < ambulanceRoutes.length; i++) {
+		var row = ambulanceTable.insertRow(i+1);
+		row.insertCell(0).innerHTML=ambulanceRoutes[i].ambulanceCode;
+		row.insertCell(1).innerHTML=ambulanceRoutes[i].ambulanceLocationText;
+		row.insertCell(2).innerHTML=ambulanceRoutes[i].routeDistance.text;
+		row.insertCell(3).innerHTML=ambulanceRoutes[i].routeDuration.text;
+	}
+}
+
+function getLatLngArray(list){
+	var returnArray = [];
+	list.forEach(function (obj){
+		returnArray.push(obj.location);
+	});
+	return returnArray;
+}
+
 function initialize() {
 	var karachiLatLng = getLatLng(24.866859, 67.013189);
+	
+	//TODO: Get this from the UI
+	var emergency = new Emergency(getLatLng(24.873025, 67.036442));
 	
 	//TODO: Get from DB
 	var ambulances = [new Ambulance ("Edhi-01", getLatLng(24.826887, 67.034962)),
@@ -42,6 +130,8 @@ function initialize() {
 	var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	
 	addAmbulanceMarkers(ambulances, map);
+	
+	populateAmbulanceRoutes (emergency, ambulances)
 }
 
 //Initialize
