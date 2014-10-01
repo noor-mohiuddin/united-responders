@@ -36,6 +36,40 @@ body {
 
 	<div id="emergency" class="emergency">
 		<h2>Emergency Details</h2>
+		<table>
+			<tbody>
+				<tr>
+					<td><label>Caller Name:</label></td>
+					<td><input type="text" name="caller-name"></td>
+				</tr>
+				<tr>
+					<td><label>Caller Phone:</label></td>
+					<td><input type="text" name="caller-number"></td>
+				</tr>
+				<tr>
+					<td><label>Emergency Type:</label></td>
+					<td>
+						<select multiple name="emergency-type" size="5">
+							<option value="cardiac">Cardiac</option>
+ 							<option value="fire" >Fire</option>
+ 							<option value="bomb">Bomb</option>
+ 							<option value="choking" >Choking</option>
+ 							<option value="malaria">Malaria</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label>Notes:</label></td>
+					<td><textarea name="emergency-notes" rows="2"></textarea></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td align="right">
+						<button type="submit">Submit</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 
 	<div>

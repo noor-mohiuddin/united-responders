@@ -11,6 +11,8 @@ h2 {
 	margin:0px;
 	width: 37%;
 	float: right;
+	line-height: 70px;
+	/*vertical-align: middle;*/
 }
 
 .ambulance-table {
