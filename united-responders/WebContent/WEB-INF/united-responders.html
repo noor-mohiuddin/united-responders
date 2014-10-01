@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<style type="text/css">
+html {
+	height: 100%
+}
+
+body {
+	height: 100%
+}
+
+#map {
+	height: 65%;
+	width: 60%;
+	margin: 10;
+	padding: 0;
+	float: left
+}
+</style>
+<link rel="stylesheet" href="united-responders.css">
+<title>United Responders</title>
+<script style="" type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeKykM-tdaW9dT4kwbG_Bu1EI5F-oZ8LQ">
+	
+</script>
+<script type="text/javascript" src="map.js"></script>
+</head>
+
+<body>
+	<div class="header">
+		<h1>United Responders</h1>
+	</div>
+
+	<div id="map"></div>
+
+	<div id="emergency" class="emergency">
+		<p>Emergency Details</p>
+	</div>
+
+	<div>
+		<table id="ambulanceList" class="ambulance-table">
+			<tbody>
+				<tr>
+					<th>Ambulance Code</th>
+					<th>Ambulance Location</th>
+					<th>Route Distance</th>
+					<th>Estimated Route Time</th>
+				</tr>
+				<tr>
+					<td>Edhi-H01</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div>
+		<table id="respondersList" class="responder-table">
+			<tbody>
+				<tr>
+					<th>Responder Name</th>
+					<th>Responder Location</th>
+					<th>Route Distance</th>
+					<th>Estimated Route Time</th>
+				</tr>
+				<tr>
+					<td>Javed Khan</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+</html>
