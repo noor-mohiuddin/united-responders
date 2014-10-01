@@ -73,7 +73,7 @@ function populateAmbulanceRoutes (emergency, ambulances) {
 				}
 			}
 			
-			populateAmbulanceTable (ambulanceRoutes.sort(compareRoutes));
+			populateAmbulanceTable (getClosestAmbulanceRoutes(ambulanceRoutes, 5));
 		}
 	}
 }
@@ -84,6 +84,19 @@ function compareRoutes(amb1, amb2){
 	  if (amb1.routeDuration.value > amb2.routeDuration.value)
 	    return 1;
 	  return 0;
+}
+
+//Will return the top max ambulance routes
+function getClosestAmbulanceRoutes(ambulanceRoutes, max){
+	var returnRoutes = [];
+	ambulanceRoutes = ambulanceRoutes.sort(compareRoutes);
+	
+	//TODO: what if ambulanceRoutes count is less than max
+	for (var i = 0; i < max; i++){
+		returnRoutes.push(ambulanceRoutes[i]);
+	}
+	
+	return returnRoutes;
 }
 
 function populateAmbulanceTable (ambulanceRoutes){
@@ -105,6 +118,19 @@ function getLatLngArray(list){
 	return returnArray;
 }
 
+function addEmergencyMarker(emergency, map){
+	var pinColor = "FF8000";
+    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+        new google.maps.Size(21, 34),
+        new google.maps.Point(0,0),
+        new google.maps.Point(10, 34));
+	var marker = new google.maps.Marker({
+	    position: emergency.location,
+	    icon:pinImage
+	});
+	marker.setMap(map);
+}
+
 function initialize() {
 	var karachiLatLng = getLatLng(24.866859, 67.013189);
 	
@@ -124,14 +150,16 @@ function initialize() {
 					 ];
 	
 	var mapOptions = {
-		center : karachiLatLng,
+		center : emergency.location,
 		zoom : 13
 	};
 	var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	
 	addAmbulanceMarkers(ambulances, map);
 	
-	populateAmbulanceRoutes (emergency, ambulances)
+	populateAmbulanceRoutes (emergency, ambulances);
+	
+	addEmergencyMarker(emergency, map);
 }
 
 //Initialize

@@ -3,9 +3,13 @@ h1 {
 	text-align: center;
 }
 
+h2 {
+	color: #FF8000;
+}
+
 .emergency {
-	margin:5px;
-	width: 30%;
+	margin:0px;
+	width: 37%;
 	float: right;
 }
 
