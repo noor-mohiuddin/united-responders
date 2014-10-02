@@ -3,6 +3,12 @@
  */
 
 /*
+ * Globals
+ */
+
+var map;
+
+/*
  * Classes
  */
 
@@ -31,7 +37,7 @@ function getLatLng(lat, lng){
 	return new google.maps.LatLng(lat, lng);
 }
 
-function addAmbulanceMarkers(ambulances, map){
+function addAmbulanceMarkers(ambulances){
 	ambulances.forEach(function (ambulance) {
 		var marker = new google.maps.Marker({
 		    position: ambulance.location,
@@ -73,7 +79,13 @@ function populateAmbulanceRoutes (emergency, ambulances) {
 				}
 			}
 			
-			populateAmbulanceTable (getClosestAmbulanceRoutes(ambulanceRoutes, 5));
+			var closestAmbulanceRoutes = getClosestAmbulanceRoutes(ambulanceRoutes, 5);
+			
+			populateAmbulanceTable (ambulanceRoutes);
+			
+			routeAmbulancesToEmergency (emergency, closestAmbulanceRoutes);
+			
+			//routeHospital
 		}
 	}
 }
@@ -118,7 +130,7 @@ function getLatLngArray(list){
 	return returnArray;
 }
 
-function addEmergencyMarker(emergency, map){
+function addEmergencyMarker(emergency){
 	var pinColor = "FF8000";
     var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
         new google.maps.Size(21, 34),
@@ -129,6 +141,33 @@ function addEmergencyMarker(emergency, map){
 	    icon:pinImage
 	});
 	marker.setMap(map);
+}
+
+function routeAmbulancesToEmergency (emergency, ambulanceRoutes){
+	var directionsDisplay;
+	var request;
+	var directionsService;
+	
+	for (var i=0; i<ambulanceRoutes.length; i++){
+		
+		directionsService = new google.maps.DirectionsService();
+	
+		request = {
+			    origin:ambulanceRoutes[i].ambulanceLocation,
+			    destination:emergency.location,
+			    travelMode: google.maps.TravelMode.DRIVING,
+				unitSystem : google.maps.UnitSystem.METRIC,
+			  };
+	
+		directionsService.route(request, function(result, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				//directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true, polylineOptions: new google.maps.Polyline({strokeColor:"#FFA000"})});
+				directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+				directionsDisplay.setMap(map);
+				directionsDisplay.setDirections(result);
+			}
+		});
+	}
 }
 
 function initialize() {
@@ -153,13 +192,14 @@ function initialize() {
 		center : emergency.location,
 		zoom : 13
 	};
-	var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+	map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	
-	addAmbulanceMarkers(ambulances, map);
+	
+	addAmbulanceMarkers(ambulances);
 	
 	populateAmbulanceRoutes (emergency, ambulances);
 	
-	addEmergencyMarker(emergency, map);
+	addEmergencyMarker(emergency);
 }
 
 //Initialize
