@@ -171,6 +171,7 @@ function routeAmbulancesToEmergency (emergency, ambulanceRoutes){
 }
 
 function initialize() {
+	initializeGUIElements();
 	var karachiLatLng = getLatLng(24.866859, 67.013189);
 	
 	//TODO: Get this from the UI
@@ -200,6 +201,35 @@ function initialize() {
 	populateAmbulanceRoutes (emergency, ambulances);
 	
 	addEmergencyMarker(emergency);
+}
+
+function initializeGUIElements(){
+	
+	//First find all checkboxes.
+	for(var i = 1; i<=5 ; i++){
+		document.getElementById("emergencyType"+i).addEventListener('change',checkboxChange)
+	}
+	
+}
+
+function checkboxChange(){
+	var emergencyArray = [];
+	
+	for(var i = 1; i<=5 ; i++){
+		var theBox = document.getElementById("emergencyType"+i);
+		if(theBox.checked){
+			emergencyArray.push(theBox.value)
+		}
+	}
+	
+	updateAmbulances(emergencyArray)
+}
+
+function updateAmbulances(emergencyArray){
+	document.getElementById("emergencyNotes").value = "";
+	for(var i = 0 ; i < emergencyArray.length ; i++){
+		document.getElementById("emergencyNotes").value = document.getElementById("emergencyNotes").value + " " + emergencyArray[i];
+	}
 }
 
 //Initialize
