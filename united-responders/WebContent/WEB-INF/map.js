@@ -262,5 +262,34 @@ function updateAmbulances(emergencyArray){
 	}
 }
 
+function initializeGUIElements(){
+	
+	//First find all checkboxes.
+	for(var i = 1; i<=5 ; i++){
+		document.getElementById("emergencyType"+i).addEventListener('change',checkboxChange)
+	}
+	
+}
+
+function checkboxChange(){
+	var emergencyArray = [];
+	
+	for(var i = 1; i<=5 ; i++){
+		var theBox = document.getElementById("emergencyType"+i);
+		if(theBox.checked){
+			emergencyArray.push(theBox.value)
+		}
+	}
+	
+	updateAmbulances(emergencyArray)
+}
+
+function updateAmbulances(emergencyArray){
+	document.getElementById("emergencyNotes").value = "";
+	for(var i = 0 ; i < emergencyArray.length ; i++){
+		document.getElementById("emergencyNotes").value = document.getElementById("emergencyNotes").value + " " + emergencyArray[i];
+	}
+}
+
 //Initialize
 google.maps.event.addDomListener(window, 'load', initialize);
