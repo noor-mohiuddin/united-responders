@@ -7,6 +7,12 @@ h2 {
 	color: #FF8000;
 }
 
+.header{
+	height: 50px;
+	text-align:center;
+	margin:20px;
+}
+
 .emergency {
 	margin:0px;
 	width: 37%;
