@@ -39,11 +39,14 @@ function getLatLng(lat, lng){
 
 function addAmbulanceMarkers(ambulances){
 	ambulances.forEach(function (ambulance) {
-		var marker = new google.maps.Marker({
+		/*var marker = new google.maps.Marker({
 		    position: ambulance.location,
 		    title:ambulance.code
 		});
-		marker.setMap(map);
+		marker.setMap(map);*/
+		createMarker(ambulance.location, ambulance.code, "d_simple_text_icon_below&chld=" + ambulance.code + "|12|FF0000|medical|12|FF0000|FFF");
+		//&chld=Hospital|12|00F|medical|12|F88|FFF
+		//"FE2E2E" use this as the color for the directions
 	});
 }
 
@@ -81,11 +84,11 @@ function populateAmbulanceRoutes (emergency, ambulances) {
 			
 			var closestAmbulanceRoutes = getClosestAmbulanceRoutes(ambulanceRoutes, 5);
 			
-			populateAmbulanceTable (ambulanceRoutes);
+			populateAmbulanceTable (closestAmbulanceRoutes);
 			
 			routeAmbulancesToEmergency (emergency, closestAmbulanceRoutes);
 			
-			//routeHospital
+			routeToHospital (emergency);
 		}
 	}
 }
@@ -130,44 +133,68 @@ function getLatLngArray(list){
 	return returnArray;
 }
 
-function addEmergencyMarker(emergency){
-	var pinColor = "FF8000";
-    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-        new google.maps.Size(21, 34),
-        new google.maps.Point(0,0),
-        new google.maps.Point(10, 34));
-	var marker = new google.maps.Marker({
-	    position: emergency.location,
-	    icon:pinImage
-	});
-	marker.setMap(map);
-}
-
 function routeAmbulancesToEmergency (emergency, ambulanceRoutes){
 	var directionsDisplay;
 	var request;
 	var directionsService;
 	
 	for (var i=0; i<ambulanceRoutes.length; i++){
-		
-		directionsService = new google.maps.DirectionsService();
-	
-		request = {
-			    origin:ambulanceRoutes[i].ambulanceLocation,
-			    destination:emergency.location,
-			    travelMode: google.maps.TravelMode.DRIVING,
-				unitSystem : google.maps.UnitSystem.METRIC,
-			  };
-	
-		directionsService.route(request, function(result, status) {
-			if (status == google.maps.DirectionsStatus.OK) {
-				//directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true, polylineOptions: new google.maps.Polyline({strokeColor:"#FFA000"})});
-				directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
-				directionsDisplay.setMap(map);
-				directionsDisplay.setDirections(result);
-			}
-		});
+		addDirection(ambulanceRoutes[i].ambulanceLocation, emergency.location, "#FE2E2E");
 	}
+}
+
+//TODO: Cache the result
+function routeToHospital (emergency){
+	var placesService = new google.maps.places.PlacesService(map);
+	var request = {
+		    location: emergency.location,
+		    radius: '10000',
+		    types: ['hospital']
+		  };
+	
+	placesService.nearbySearch(request, function callback(results, status) {
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+			//TODO:if no hospitals are returned then expand search
+			addDirection(emergency.location, results[0].geometry.location, "#0080FF");
+			
+			
+			//Add marker: 
+			//TODO: Find a way to highlight existing one
+			createMarker(results[0].geometry.location, "Hospital", "d_map_pin_letter&chld=H|81BEF7");
+		}
+	});
+}
+
+function addDirection(start, end, color){
+	var directionsService = new google.maps.DirectionsService();
+	
+	var request = {
+		    origin:start,
+		    destination:end,
+		    travelMode: google.maps.TravelMode.DRIVING,
+			unitSystem : google.maps.UnitSystem.METRIC,
+		  };
+
+	directionsService.route(request, function(result, status) {
+		if (status == google.maps.DirectionsStatus.OK) {
+			var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true, preserveViewport: true, polylineOptions: new google.maps.Polyline({strokeColor:color})});
+			//directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+			directionsDisplay.setMap(map);
+			directionsDisplay.setDirections(result);
+		}
+	});
+}
+
+function createMarker(location, tooltip, mapsAPIURL){
+	var marker = new google.maps.Marker({
+	    position: location,
+	    title: tooltip,
+	    icon:new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst="+ mapsAPIURL,
+	            new google.maps.Size(100, 40),
+	            new google.maps.Point(0,0),
+	            new google.maps.Point(20, 30))//left, up
+	});
+	marker.setMap(map);
 }
 
 function initialize() {
@@ -199,7 +226,10 @@ function initialize() {
 	
 	populateAmbulanceRoutes (emergency, ambulances);
 	
-	addEmergencyMarker(emergency);
+	//Create emergency marker
+	//TODO: use an enum
+	//TODO: use the location address in the tooltip
+	createMarker(emergency.location, "Emergency", "d_map_pin_letter&chld=E|FF8000");
 }
 
 //Initialize
