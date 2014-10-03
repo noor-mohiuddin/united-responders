@@ -53,18 +53,16 @@ body {
 				<tr>
 					<td><label>Emergency Type:</label></td>
 					<td>
-						<select multiple name="emergency-type" size="5">
-							<option value="cardiac">Cardiac</option>
- 							<option value="respiratory" >Respiratory</option>
- 							<option value="trauma">Trauma</option>
- 							<option value="other" >Other Emergency</option>
- 							<option value="non">Non Emergency</option>
-						</select>
+						<input type="checkbox" id="emergencyType1" value="Cardiac">Cardiac</br>
+						<input type="checkbox" id="emergencyType2" value="Respiratory">Respiratory</br>
+						<input type="checkbox" id="emergencyType3" value="Trauma">Trauma</br>
+						<input type="checkbox" id="emergencyType4" value="Emergency">Other Emergency</br>
+						<input type="checkbox" id="emergencyType5" value="Non-Emergency">Non-Emergency</br>
 					</td>
 				</tr>
 				<tr>
 					<td><label>Notes:</label></td>
-					<td><textarea name="emergency-notes" rows="2"></textarea></td>
+					<td><textarea name="emergency-notes" id="emergencyNotes" rows="2"></textarea></td>
 				</tr>
 				<tr>
 					<td></td>
