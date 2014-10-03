@@ -8,6 +8,19 @@
 
 var map;
 
+//TODO: Get from DB
+var ambulances = [new Ambulance ("Edhi-01", getLatLng(24.826887, 67.034962)),
+                  new Ambulance ("Aman-A1", getLatLng(24.856965, 67.003505)),
+                  new Ambulance ("Edhi-02", getLatLng(24.868876, 66.995163)),
+                  new Ambulance ("Chhipa-A", getLatLng(24.900126, 67.046660)),
+                  new Ambulance ("Chhipa-B", getLatLng(24.912341, 67.031768)),
+                  new Ambulance ("Aman-A2", getLatLng(24.939248, 67.100722)),
+                  new Ambulance ("Edhi-03", getLatLng(24.837417, 67.134429)),
+                  new Ambulance ("RedCresent-R1", getLatLng(24.794554, 67.059873)),
+                  new Ambulance ("AghaKhan-AK", getLatLng(24.890603, 67.075064))
+				 ];
+
+
 /*
  * Classes
  */
@@ -116,6 +129,11 @@ function getClosestAmbulanceRoutes(ambulanceRoutes, max){
 
 function populateAmbulanceTable (ambulanceRoutes){
 	var ambulanceTable = document.getElementById("ambulanceList");
+	
+	while (ambulanceTable.rows.length > 1){
+		ambulanceTable.deleteRow(1);
+	}
+	
 	for (var i = 0; i < ambulanceRoutes.length; i++) {
 		var row = ambulanceTable.insertRow(i+1);
 		row.insertCell(0).innerHTML=ambulanceRoutes[i].ambulanceCode;
@@ -124,6 +142,14 @@ function populateAmbulanceTable (ambulanceRoutes){
 		row.insertCell(3).innerHTML=ambulanceRoutes[i].routeDuration.text;
 	}
 }
+
+function resetAmbulanceTable(){
+	var ambulanceTable = document.getElementById("ambulanceList");
+	for (var i = 1; i < ambulanceTable.rows.length; i++) {
+		ambulanceTable.deleteRow(i);
+	}
+}
+
 
 function getLatLngArray(list){
 	var returnArray = [];
@@ -198,31 +224,60 @@ function createMarker(location, tooltip, mapsAPIURL){
 }
 
 function initialize() {
-	initializeGUIElements();
 	var karachiLatLng = getLatLng(24.866859, 67.013189);
 	
-	//TODO: Get this from the UI
-	var emergency = new Emergency(getLatLng(24.873025, 67.036442));
-	
-	//TODO: Get from DB
-	var ambulances = [new Ambulance ("Edhi-01", getLatLng(24.826887, 67.034962)),
-	                  new Ambulance ("Aman-A1", getLatLng(24.856965, 67.003505)),
-	                  new Ambulance ("Edhi-02", getLatLng(24.868876, 66.995163)),
-	                  new Ambulance ("Chhipa-A", getLatLng(24.900126, 67.046660)),
-	                  new Ambulance ("Chhipa-B", getLatLng(24.912341, 67.031768)),
-	                  new Ambulance ("Aman-A2", getLatLng(24.939248, 67.100722)),
-	                  new Ambulance ("Edhi-03", getLatLng(24.837417, 67.134429)),
-	                  new Ambulance ("RedCresent-R1", getLatLng(24.794554, 67.059873)),
-	                  new Ambulance ("AghaKhan-AK", getLatLng(24.890603, 67.075064))
-					 ];
-	
 	var mapOptions = {
-		center : emergency.location,
-		zoom : 13
+		center : karachiLatLng,
+		zoom : 12
 	};
 	map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	
+	initializeGUIElements();
 	
+	addAmbulanceMarkers(ambulances);
+}
+
+function initializeGUIElements(){
+	
+	//First find all checkboxes.
+	for(var i = 1; i<=5 ; i++){
+		document.getElementById("emergencyType"+i).addEventListener('change',checkboxChange)
+	}
+	
+}
+
+function checkboxChange(){
+	var emergencyArray = [];
+	
+	for(var i = 1; i<=5 ; i++){
+		var theBox = document.getElementById("emergencyType"+i);
+		if(theBox.checked){
+			emergencyArray.push(theBox.value)
+		}
+	}
+	
+	updateAmbulances(emergencyArray)
+}
+
+function updateAmbulances(emergencyArray){
+	document.getElementById("emergencyNotes").value = "";
+	for(var i = 0 ; i < emergencyArray.length ; i++){
+		document.getElementById("emergencyNotes").value = document.getElementById("emergencyNotes").value + " " + emergencyArray[i];
+	}
+}
+
+function newEmergency(){
+	//24.873025, 67.036442
+	
+	//TODO: Get this from the UI
+	var emergency = new Emergency(getLatLng(24.820589 + (Math.random()/10), 66.979761 + (Math.random()/10)));
+	
+	var mapOptions = {
+			center : emergency.location,
+			zoom : 12
+		};
+	map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
 	addAmbulanceMarkers(ambulances);
 	
 	populateAmbulanceRoutes (emergency, ambulances);
@@ -231,64 +286,6 @@ function initialize() {
 	//TODO: use an enum
 	//TODO: use the location address in the tooltip
 	createMarker(emergency.location, "Emergency", "d_map_pin_letter&chld=E|FF8000");
-}
-
-function initializeGUIElements(){
-	
-	//First find all checkboxes.
-	for(var i = 1; i<=5 ; i++){
-		document.getElementById("emergencyType"+i).addEventListener('change',checkboxChange)
-	}
-	
-}
-
-function checkboxChange(){
-	var emergencyArray = [];
-	
-	for(var i = 1; i<=5 ; i++){
-		var theBox = document.getElementById("emergencyType"+i);
-		if(theBox.checked){
-			emergencyArray.push(theBox.value)
-		}
-	}
-	
-	updateAmbulances(emergencyArray)
-}
-
-function updateAmbulances(emergencyArray){
-	document.getElementById("emergencyNotes").value = "";
-	for(var i = 0 ; i < emergencyArray.length ; i++){
-		document.getElementById("emergencyNotes").value = document.getElementById("emergencyNotes").value + " " + emergencyArray[i];
-	}
-}
-
-function initializeGUIElements(){
-	
-	//First find all checkboxes.
-	for(var i = 1; i<=5 ; i++){
-		document.getElementById("emergencyType"+i).addEventListener('change',checkboxChange)
-	}
-	
-}
-
-function checkboxChange(){
-	var emergencyArray = [];
-	
-	for(var i = 1; i<=5 ; i++){
-		var theBox = document.getElementById("emergencyType"+i);
-		if(theBox.checked){
-			emergencyArray.push(theBox.value)
-		}
-	}
-	
-	updateAmbulances(emergencyArray)
-}
-
-function updateAmbulances(emergencyArray){
-	document.getElementById("emergencyNotes").value = "";
-	for(var i = 0 ; i < emergencyArray.length ; i++){
-		document.getElementById("emergencyNotes").value = document.getElementById("emergencyNotes").value + " " + emergencyArray[i];
-	}
 }
 
 //Initialize
