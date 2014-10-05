@@ -33,6 +33,11 @@ h2 {
 	/*font-weight:bold;*/
 }
 
+.map-legend{
+	width: 60%;
+	clear: both;
+	margin: 5px;
+}
 
 .ambulance-table {
 	margin:5px;padding:0px;
