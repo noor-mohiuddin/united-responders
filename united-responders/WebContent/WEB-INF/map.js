@@ -118,7 +118,7 @@ function populateAmbulanceRoutes (emergency, ambulances) {
 			var ambulanceRoutes = [];
 			
 			//TODO: Find a better place to do this
-			//TODO: Populate the emergency location
+			document.getElementById("emergency-location").value=destinations[0];
 			
 			for (var i = 0; i < origins.length; i++) {
 				var results = response.rows[i].elements;
@@ -126,7 +126,7 @@ function populateAmbulanceRoutes (emergency, ambulances) {
 					var element = results[j];
 					ambulanceRoutes.push(new AmbulanceRoute(
 												ambulances[i],
-												response.originAddresses[i],
+												origins[i],
 												element.distance,
 												element.duration
 										));
@@ -233,12 +233,11 @@ function routeToHospital (emergency){
 	
 	placesService.nearbySearch(request, function callback(results, status) {
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
-			//TODO: Update Hospital location
-			
+			document.getElementById("hospital-name").value=results[0].name;
+			document.getElementById("hospital-location").value=results[0].vicinity;
 			
 			//TODO:if no hospitals are returned then expand search
 			addDirection(emergency.location, results[0].geometry.location, "#0080FF");
-			
 			
 			//Add marker: 
 			//TODO: Find a way to highlight existing one
@@ -408,7 +407,7 @@ function newEmergency(){
 function loadMap(ambulances, responders){
 	var mapOptions = {
 			center : emergency.location,
-			zoom : 12
+			zoom : 13
 		};
 	map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	
