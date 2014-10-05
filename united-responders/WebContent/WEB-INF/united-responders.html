@@ -35,10 +35,10 @@ body {
 	<div id="map"></div>
 	
 	<div id="emergency" class="emergency">
-		<p align="center">
+		<p align="left">
 			<button id="generateEmergency" type="submit" style="margin:7px" onclick="newEmergency()">New Emergency</button>
 		</p>
-		<h2>Emergency Details</h2>
+		<h2>Emergency Information</h2>
 		<table>
 			<tbody>
 				<tr>
@@ -50,25 +50,27 @@ body {
 					<td><input type="text" name="caller-number"></td>
 				</tr>
 				<tr>
-					<td><label>Caller Location:</label></td>
-					<td><input type="text" name="caller-location"></td>
+					<td><label>Emergency Location:</label></td>
+					<td><input type="text" name="emergency-location"></td>
 				</tr>
 				<tr>
 					<td><label>Emergency Type:</label></td>
 					<td>
 						<input type="checkbox" id="emergencyType1" value="Cardiac">Cardiac</br>
 						<input type="checkbox" id="emergencyType2" value="Respiratory">Respiratory</br>
-						<input type="checkbox" id="emergencyType3" value="Trauma">Trauma</br>
+						<input type="checkbox" id="emergencyType3" value="Trauma">Trauma
+					</td>
+					<td>
 						<input type="checkbox" id="emergencyType4" value="Emergency">Other Emergency</br>
-						<input type="checkbox" id="emergencyType5" value="Non-Emergency">Non-Emergency</br>
+						<input type="checkbox" id="emergencyType5" value="Non-Emergency">Non-Emergency
 					</td>
 				</tr>
 				<tr>
 					<td><label>Notes:</label></td>
-					<td><textarea name="emergency-notes" id="emergencyNotes" rows="2"></textarea></td>
+					<td colspan="2"><textarea name="emergency-notes" id="emergencyNotes" rows="2" cols="30"></textarea></td>
 				</tr>
 				<tr>
-					<td></td>
+					<td></td><td></td>
 					<td align="right">
 						<button type="submit">Submit</button>
 					</td>
@@ -91,7 +93,7 @@ body {
 	</div>
 
 	<div>
-		<table id="respondersList" class="responder-table">
+		<table id="responderList" class="responder-table">
 			<tbody>
 				<tr>
 					<td>Responder Name</td>
