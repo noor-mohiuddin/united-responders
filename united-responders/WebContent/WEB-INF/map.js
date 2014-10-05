@@ -227,8 +227,9 @@ function routeToHospital (emergency){
 	var placesService = new google.maps.places.PlacesService(map);
 	var request = {
 		    location: emergency.location,
-		    radius: '10000',
-		    types: ['hospital']
+		    //radius: '10000',
+		    types: ['hospital'],
+		    rankBy: google.maps.places.RankBy.DISTANCE
 		  };
 	
 	placesService.nearbySearch(request, function callback(results, status) {
@@ -237,6 +238,7 @@ function routeToHospital (emergency){
 			document.getElementById("hospital-location").value=results[0].vicinity;
 			
 			//TODO:if no hospitals are returned then expand search
+			//TODO:use travel duration to get the closest ambulance
 			addDirection(emergency.location, results[0].geometry.location, "#0080FF");
 			
 			//Add marker: 
@@ -329,7 +331,7 @@ function createMarker(location, tooltip, mapsAPIURL){
 	    icon:new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst="+ mapsAPIURL,
 	            new google.maps.Size(100, 40),
 	            new google.maps.Point(0,0),
-	            new google.maps.Point(0, 10))//left, up (20, 30)
+	            new google.maps.Point(20, 30))//left, up
 	});
 	marker.setMap(map);
 }
