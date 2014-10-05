@@ -16,8 +16,8 @@ var ambulances = [new Ambulance ("Edhi-01", getLatLng(24.826887, 67.034962), ["T
                   new Ambulance ("Chhipa-A", getLatLng(24.900126, 67.046660), ["Trauma", "Emergency", "Non-Emergency"]),
                   new Ambulance ("Chhipa-B", getLatLng(24.912341, 67.031768), ["Emergency", "Non-Emergency"]),
                   new Ambulance ("Aman-A2", getLatLng(24.939248, 67.100722), ["Cardiac", "Respiratory", "Trauma", "Emergency", "Non-Emergency"]),
-                  new Ambulance ("Edhi-03", getLatLng(24.837417, 67.134429), ["Cardiac", "Respiratory", "Trauma", "Emergency", "Non-Emergency"]),
-                  new Ambulance ("RedCresent-R1", getLatLng(24.794554, 67.059873), ["Cardiac", "Respiratory", "Trauma", "Emergency", "Non-Emergency"]),
+                  new Ambulance ("Edhi-03", getLatLng(24.837417, 67.134429), ["Cardiac", "Trauma", "Emergency", "Non-Emergency"]),
+                  new Ambulance ("RedCresent-R1", getLatLng(24.794554, 67.059873), ["Cardiac", "Emergency", "Non-Emergency"]),
                   new Ambulance ("AghaKhan-AK", getLatLng(24.890603, 67.075064), ["Cardiac", "Trauma", "Emergency", "Non-Emergency"])
 				  ];
 
@@ -27,7 +27,8 @@ var responders = [new Responder ("Javed Shiekh", getLatLng(24.870825, 67.015910)
 				  new Responder ("Ali Jamal", getLatLng(24.830233, 67.131728), ["Cardiac", "Trauma"]),
 				  new Responder ("Hasnain Barkhurdari", getLatLng(24.830233, 67.131728), ["Respiratory", "Trauma"]),
 				  new Responder ("Noor Jalal", getLatLng(24.927589, 67.033162), ["Non-Emergency"]),
-				  new Responder ("Haniyyah Khan", getLatLng(24.877886, 67.065735), ["Cardiac", "Respiratory", "Trauma", "Emergency", "Non-Emergency"])
+				  new Responder ("Haniyyah Khan", getLatLng(24.877886, 67.065735), ["Cardiac", "Respiratory", "Trauma", "Emergency", "Non-Emergency"]),
+				  new Responder ("Nidal Moinuddin", getLatLng(24.878439, 67.065390), ["Cardiac"])
                   ];
 
 var emergency;
