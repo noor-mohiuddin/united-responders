@@ -34,6 +34,7 @@ h2 {
 }
 
 .map-legend{
+	font-family:Trebuchet MS;
 	width: 60%;
 	clear: both;
 	margin: 5px;
