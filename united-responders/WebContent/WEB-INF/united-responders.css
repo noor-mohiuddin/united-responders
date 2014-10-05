@@ -23,6 +23,17 @@ h2 {
 	vertical-align: middle;*/
 }
 
+.label{
+	font-family:Trebuchet MS;
+	/*font-weight:bold;*/
+}
+
+.checkbox-label{
+	font-family:Trebuchet MS;
+	/*font-weight:bold;*/
+}
+
+
 .ambulance-table {
 	margin:5px;padding:0px;
 	width:45%;
