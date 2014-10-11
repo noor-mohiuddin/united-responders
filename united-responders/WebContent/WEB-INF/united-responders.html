@@ -12,11 +12,9 @@ body {
 }
 
 #map {
-	height: 60%;
-	width: 50%;
-	margin: 10;
+	height: 83%;
+	margin: 0;
 	padding: 0;
-	float: left
 }
 </style>
 <link rel="stylesheet" href="united-responders.css">
@@ -29,122 +27,131 @@ body {
 </head>
 
 <body>
-	<div class="header">
-		<img src="united-responders-header.png" style="width:632px;height:38px;"></img>
-	</div>
-
-	<div id="map"></div>
+	<div id="leftgap" class="leftgap">&nbsp;</div>
+	<div id="main" class="main">
 	
-	<div id="emergency" class="emergency">
-		<p align="left">
-			-- Test Mode --
-			<button id="generateEmergency" type="submit" style="margin:7px" onclick="newEmergency()">New Emergency</button>
-		</p>
-		<h2>Emergency Information</h2>
-		<table>
-			<tbody>
-				<tr>
-					<td><label class="label">Caller Name:</label></td>
-					<td><input type="text" id="caller-name"></td>
-				</tr>
-				<tr>
-					<td><label class="label">Caller Phone:</label></td>
-					<td><input type="text" id="caller-number"></td>
-				</tr>
-				<tr>
-					<td><label class="label">Emergency Location:</label></td>
-					<td><input type="text" id="emergency-location"></td>
-				</tr>
-				<tr>
-					<td><label class="label">Emergency Type:</label></td>
-					<td>
-						<input type="checkbox" id="emergencyType1" class="" value="Cardiac"><label class="label">Cardiac</label></br>
-						<input type="checkbox" id="emergencyType2" value="Respiratory"><label class="label">Respiratory</label></br>
-						<input type="checkbox" id="emergencyType3" value="Trauma"><label class="label">Trauma</label>
-					</td>
-					<td>
-						<input type="checkbox" id="emergencyType4" value="Emergency"><label class="label">Other Emergency</label></br>
-						<input type="checkbox" id="emergencyType5" value="Non-Emergency"><label class="label">Non-Emergency</label>
-					</td>
-				</tr>
-				<tr>
-					<td><label class="label">Notes:</label></td>
-					<td colspan="2"><textarea id="emergency-notes" rows="2" cols="30"></textarea></td>
-				</tr>
-				<tr>
-					<td></td><td></td>
-					<td align="right">
-						<!--<button type="submit">Submit</button>-->
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<h2>Hospital Information</h2>
-		<table>
-			<tbody>
-				<tr>
-					<td><label class="label">Hospital Name:</label></td>
-					<td><input type="text" id="hospital-name"></td>
-				</tr>
-				<tr>
-					<td><label class="label">Hospital Location:</label></td>
-					<td><input type="text" id="hospital-location"></td>
-				</tr>
-			</tbody>
-		</table>
+		<div id="header" class="header">
+			<h2>Dispatcher View</h2>
+			<img src="united-responders-logo.jpg" align="right" style="width:60px;height:60px;">
+			<!--  <img src="united-responders-header.png" style="width:632px;height:38px;"></img>-->
+		</div>
+		
+		<div id="content" class="content">
+			
+			<div id="leftcontent" class="leftcontent">
+			
+				<div id="map"></div>
+				
+				<div class="map-legend">
+					<table align="center">
+						<tr>
+							<th><img src="emergency.jpg"></img></th><td>Emergency Location</td><!--<td>&nbsp;&nbsp;&nbsp;</td> -->
+							<th><img src="basic-ambulance.jpg"></img></th><td>Basic Ambulance</td><!--<td>&nbsp;&nbsp;&nbsp;</td> -->
+							<th><img src="adv-ambulance.jpg"></img></th><td>Advanced Ambulance</td>
+							<th><img src="responder.jpg"></img></th><td>First Responder</td><!--<td>&nbsp;&nbsp;&nbsp;</td> -->
+							<th><img src="hospital.png"></img></th><td>Hospital</td><!--<td>&nbsp;&nbsp;&nbsp;</td> -->					
+						</tr>
+					</table>
+				</div>			
+			</div>
+			
+			<div id="rightcontent" class="rightcontent">
+				<div id="emergency" class="emergency">
+					<p align="right">
+						<button id="generateEmergency" type="submit" onclick="newEmergency()">New Emergency</button>
+					</p>
+					<h3>Emergency Information</h3>
+					<table class="emergency-table">
+						<tr>
+							<th><label>Caller Name:</label></th>
+							<td><input size="55px" type="text" id="caller-name"></td>
+						</tr>
+						<tr>
+							<th><label class="label">Caller Phone:</label></th>
+							<td><input size="55px" type="text" id="caller-number"></td>
+						</tr>
+						<tr>
+							<th><label class="label">Emergency Location:</label></th>
+							<td><input size="55px" type="text" id="emergency-location"></td>
+						</tr>
+						<tr>
+							<th><label>Emergency Type:</label></th>
+							<td>
+								<table class="checkbox-table">
+									<tr>
+										<td><input type="checkbox" id="emergencyType1" class="" value="Cardiac"></td><td width="150px"><label>Cardiac</label></td>
+										<td><input type="checkbox" id="emergencyType2" value="Respiratory"></td><td><label>Respiratory</label></td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" id="emergencyType3" value="Trauma"></td><td><label>Trauma</label></td>									
+										<td><input type="checkbox" id="emergencyType4" value="Emergency"></td><td><label>Other Emergency</label></td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" id="emergencyType5" value="Non-Emergency"></td><td><label>Non-Emergency</label></td>
+									</tr>
+								</table>
+							</td>							
+						</tr>
+						<tr>
+							<th><label>Notes:</label></th>
+							<td colspan="2"><textarea id="emergency-notes" rows="2" cols="40" style="font-family:Arial" ></textarea></td>
+						</tr>
+					</table>
+					<h3>Hospital Information</h3>
+					<table class="emergency-table">
+						<tr>
+							<th><label class="label">Hospital Name:</label></th>
+							<td><input type="text" size="55px" id="hospital-name"></td>
+						</tr>
+						<tr>
+							<th><label class="label">Hospital Location:</label></th>
+							<td><input type="text" size="55px" id="hospital-location"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id="bottom" class="bottom">
+			<div id="ambulances" class="ambulances">
+				<table id="ambulanceList" class="ambulance-table">
+					<colgroup>
+						<col style="width: 20%">
+						<col style="width: 41%">
+						<col style="width: 13%">
+						<col style="width: 13%">
+						<col style="width: 13%">
+					</colgroup>
+					<tr>
+						<th>Ambulance Code</th>
+						<th>Location</th>
+						<th>Distance</th>
+						<th>Route Time</th>
+						<th>Dispatch</th>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="responders" class="responders">
+				<table id="responderList" class="responder-table">
+					<colgroup>
+						<!--fix this -->
+						<col style="width: 20%">
+						<col style="width: 12%">
+						<col style="width: 12%">
+						<col style="width: 12%">
+						<col style="width: 5%">
+					</colgroup>
+					<tr>
+						<th>Responder Name</th>
+						<th>Distance</th>
+						<th>Route Time</th>
+						<th>Notify</th>
+						<th>Status</th>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
-	
-	<div class="map-legend">
-		<table align="center">
-			<tbody>
-				<tr>
-					<td width="150"><img src="https://chart.googleapis.com/chart?chst=d_simple_text_icon_below&chld=Ambulance Code|12|FF0000|medical|12|FF0000|FFF"></img></td>
-					<td width="150"><img src="https://chart.googleapis.com/chart?chst=d_text_outline&chld=00FF00|12|h|0B610B|_|Responder Name"></img></td>
-					<td width="150"><img src="https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=E|FF8000"></img>Emergency</td>
-					<td width="150"><img src="https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=H|81BEF7"></img>Hospital</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div>
-		<table id="ambulanceList" class="ambulance-table">
-			<colgroup>
-				<col style="width: 20%">
-				<col style="width: 1">
-				<col style="width: 12%">
-				<col style="width: 12%">
-				<col style="width: 12%">
-			</colgroup>
-			<tr>
-				<th>Ambulance Code</th>
-				<th>Location</th>
-				<th>Distance</th>
-				<th>Route Time</th>
-				<th>Dispatch</th>
-			</tr>
-		</table>
-	</div>
-
-	<div>
-		<table id="responderList" class="responder-table">
-			<colgroup>
-				<col style="width: 20%">
-				<col style="width: 1">
-				<col style="width: 12%">
-				<col style="width: 12%">
-				<col style="width: 10%">
-				<col style="width: 5%">
-			</colgroup>
-			<tr>
-				<th>Responder Name</th>
-				<th>Location</th> <!-- Remove -->
-				<th>Distance</th>
-				<th>Route Time</th>
-				<th>Notify</th>
-				<th>Status</th>
-			</tr>
-		</table>
-	</div>
-
+	<div id="rightgap" class="rightgap">&nbsp;</div>
 </body>
 </html>

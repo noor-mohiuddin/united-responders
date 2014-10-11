@@ -17,7 +17,7 @@ var ambulances = [new Ambulance ("Edhi-01", getLatLng(24.826887, 67.034962), ["T
                   new Ambulance ("Chhipa-B", getLatLng(24.912341, 67.031768), ["Emergency", "Non-Emergency"]),
                   new Ambulance ("Aman-A2", getLatLng(24.939248, 67.100722), ["Cardiac", "Respiratory", "Trauma", "Emergency", "Non-Emergency"]),
                   new Ambulance ("Edhi-03", getLatLng(24.837417, 67.134429), ["Cardiac", "Trauma", "Emergency", "Non-Emergency"]),
-                  new Ambulance ("RedCresent-R1", getLatLng(24.794554, 67.059873), ["Cardiac", "Emergency", "Non-Emergency"]),
+                  new Ambulance ("RedCresent-R1", getLatLng(24.794554, 67.059873), ["Emergency", "Non-Emergency"]),
                   new Ambulance ("AghaKhan-AK", getLatLng(24.890603, 67.075064), ["Cardiac", "Trauma", "Emergency", "Non-Emergency"])
 				  ];
 
@@ -86,7 +86,13 @@ function addAmbulanceMarkers(ambulances){
 		    title:ambulance.code
 		});
 		marker.setMap(map);*/
-		createMarker(ambulance.location, ambulance.code, "d_simple_text_icon_below&chld=" + ambulance.code + "|12|FF0000|medical|12|FF0000|FFF");
+		if (ambulance.emergencyTypes.indexOf("Cardiac") == -1){
+			createMarkerIcon(ambulance.location, ambulance.code, "basic-ambulance.jpg");
+		}
+		else {
+			createMarkerIcon(ambulance.location, ambulance.code, "adv-ambulance.jpg");
+		}
+		//createMarker(ambulance.location, ambulance.code, "d_simple_text_icon_below&chld=" + ambulance.code + "|12|FF0000|medical|12|FF0000|FFF");
 		//&chld=Hospital|12|00F|medical|12|F88|FFF
 		//"FE2E2E" use this as the color for the directions
 	});
@@ -95,7 +101,8 @@ function addAmbulanceMarkers(ambulances){
 function addResponderMarkers(responderRoutes){
 	responderRoutes.forEach(function (responderRoute){
 		//https://chart.googleapis.com/chart?chst=d_text_outline&chld=00FF00|20|h|0B610B|_|Freshly+Made+Pie
-		createMarker(responderRoute.responderLocation, responderRoute.responderName, "d_text_outline&chld=00FF00|12|h|0B610B|_|" + responderRoute.responderName);
+		createMarkerIcon(responderRoute.responderLocation, responderRoute.responderName, "responder.png");
+		//createMarker(responderRoute.responderLocation, responderRoute.responderName, "d_text_outline&chld=00FF00|12|h|0B610B|_|" + responderRoute.responderName);
 	});
 }
 
@@ -191,9 +198,8 @@ function populateRespondersTable (responderRoutes){
 	for (var i = 0; i < responderRoutes.length; i++) {
 		var row = responderTable.insertRow(i+1);
 		row.insertCell(0).innerHTML=responderRoutes[i].responderName;
-		row.insertCell(1).innerHTML=responderRoutes[i].responderLocationText;
-		row.insertCell(2).innerHTML=responderRoutes[i].routeDistance.text;
-		row.insertCell(3).innerHTML=responderRoutes[i].routeDuration.text;
+		row.insertCell(1).innerHTML=responderRoutes[i].routeDistance.text;
+		row.insertCell(2).innerHTML=responderRoutes[i].routeDuration.text;
 	}
 }
 
@@ -244,7 +250,8 @@ function routeToHospital (emergency){
 			
 			//Add marker: 
 			//TODO: Find a way to highlight existing one
-			createMarker(results[0].geometry.location, "Hospital", "d_map_pin_letter&chld=H|81BEF7");
+			createMarkerIcon(results[0].geometry.location, "Hospital", "hospital.png");
+			//createMarker(results[0].geometry.location, "Hospital", "d_map_pin_letter&chld=H|81BEF7");
 		}
 	});
 }
@@ -337,6 +344,18 @@ function createMarker(location, tooltip, mapsAPIURL){
 	marker.setMap(map);
 }
 
+function createMarkerIcon(location, tooltip, icon){
+	var marker = new google.maps.Marker({
+	    position: location,
+	    title: tooltip,
+	    icon:new google.maps.MarkerImage(icon,
+	            new google.maps.Size(100, 40),
+	            new google.maps.Point(0,0),
+	            new google.maps.Point(20, 30))//left, up
+	});
+	marker.setMap(map);
+}
+
 function filterByEmergencyTypes(col){
 	if (emergency.types.length == 0){
 		return col;
@@ -419,7 +438,8 @@ function loadMap(ambulances, responders){
 	//Create emergency marker
 	//TODO: use an enum
 	//TODO: use the location address in the tooltip
-	createMarker(emergency.location, "Emergency", "d_map_pin_letter&chld=E|FF8000");
+	createMarkerIcon(emergency.location, "Emergency", "emergency.jpg");
+	//createMarker(emergency.location, "Emergency", "d_map_pin_letter&chld=E|FF8000");
 	
 	populateAmbulanceRoutes(emergency, ambulances);
 	
